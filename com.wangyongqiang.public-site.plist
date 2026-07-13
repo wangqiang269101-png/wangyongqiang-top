@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.wangyongqiang.public-site</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/wangyongqiang/Desktop/Ai 助手/public-site/start_tunnel.sh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/wangyongqiang/Desktop/Ai 助手/public-site/logs/launchd.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/wangyongqiang/Desktop/Ai 助手/public-site/logs/launchd.err.log</string>
+  <key>WorkingDirectory</key>
+  <string>/Users/wangyongqiang/Desktop/Ai 助手/public-site</string>
+</dict>
+</plist>
