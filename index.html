@@ -14,30 +14,43 @@
   .card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:24px; backdrop-filter:blur(8px); transition:transform .2s, background .2s; text-decoration:none; color:inherit; display:block; }
   .card:hover { transform:translateY(-3px); background:rgba(255,255,255,.12); }
   .card h2 { font-size:18px; margin-bottom:8px; }
-  .card .meta { font-size:13px; color:#8c8c9a; margin-top:8px; }
-  .placeholder { font-size:13px; color:#69b1ff; margin-top:12px; }
+  .card .meta { font-size:13px; color:#8c8c9a; }
+  .stats { display:flex; gap:20px; margin-top:16px; flex-wrap:wrap; }
+  .stat { font-size:13px; }
+  .stat b { display:block; font-size:22px; color:#69b1ff; margin-bottom:4px; }
   footer { text-align:center; color:#6c6c7d; font-size:12px; margin-top:48px; padding-bottom:24px; }
 </style>
 </head>
 <body>
   <div class="hero">
     <h1>📊 业务数据看板</h1>
-    <p>wangyongqiang.top · 外卖/团购业务数据分析对外展示</p>
+    <p>wangyongqiang.top · 外卖/团购业务数据分析对外展示<br>最后更新：2026-07-15 00:46</p>
     <div class="grid">
       <a class="card" href="todo.html">
         <h2>📋 城市 Todo 达成</h2>
-        <div class="placeholder">数据同步中 · 敬请期待</div>
+        <div class="meta">美团业务要求列表 · 城市/负责人/进度追踪</div>
+        <div class="stats">
+          <div class="stat"><b>39</b>任务</div>
+          <div class="stat"><b>25</b>城市</div>
+          <div class="stat"><b>10</b>已完成</div>
+          <div class="stat"><b>4</b>未启动</div>
+        </div>
       </a>
       <a class="card" href="dashboard.html">
         <h2>📈 综合数据看板</h2>
-        <div class="placeholder">数据同步中 · 敬请期待</div>
+        <div class="meta">新商评价 · 广告达成 · 夜宵复盘 · 基本功</div>
+        <div class="stats">
+          <div class="stat"><b>6</b>核心板块</div>
+          <div class="stat"><b>多</b>城市维度</div>
+        </div>
       </a>
       <a class="card" href="data/todo.json">
         <h2>🔗 开放数据 API</h2>
-        <div class="placeholder">数据同步中 · 敬请期待</div>
+        <div class="meta">静态 JSON 数据接口，可供前端/脚本读取</div>
+        <div class="stats"><div class="stat"><b>JSON</b>todo.json</div></div>
       </a>
     </div>
-    <footer>wangyongqiang.top</footer>
+    <footer>wangyongqiang.top · 直抓同步</footer>
   </div>
 </body>
 </html>
