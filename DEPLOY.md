@@ -25,10 +25,48 @@
 ## 站点文件
 
 - 源码目录：`/Users/wangyongqiang/Desktop/Ai 助手/public-site/`
-- 构建脚本：`build_public_site.py`
+- 占位构建：`build_public_site.py`（仅模板/空数据）
+- 直抓同步：`scripts/sync_public_site.py`（抓取 → 转换 → 推送）
+- 配置文件：`scripts/public_site_config.json`
 - GitHub 仓库：https://github.com/wangqiang269101-png/wangyongqiang-top
 
-## DNS 记录（腾讯云 DNSPod）
+## 直抓同步（推荐）
+
+远程抓取数据，写入 `public-site/` 并推送到 GitHub Pages，**不依赖本地 CSV**。
+
+```bash
+cd "/Users/wangyongqiang/Desktop/Ai 助手"
+
+# 本地验证（stub 空数据，不写 git）
+python3 scripts/sync_public_site.py --dry-run
+
+# Chrome 已登录美团 → 抓取 + 同步 + 推送
+python3 scripts/sync_public_site.py --fetch-mode chrome --deploy
+
+# 使用已缓存的 raw JSON（分析输出/xianfu_task_list_raw.json）
+python3 scripts/sync_public_site.py --fetch-mode file --deploy
+
+# 一键：Chrome 抓取 → 同步 → 推送
+./scripts/scrape_and_publish.sh
+```
+
+`fetch.mode` 可选：`stub`（占位）、`file`（本地 JSON）、`api`（HTTP URL）、`chrome`（浏览器会话）。
+
+日志：`分析输出/sync.log`
+
+## 占位构建（仅模板）
+
+```bash
+cd "/Users/wangyongqiang/Desktop/Ai 助手"
+python3 build_public_site.py
+```
+
+## 手动推送
+
+```bash
+cd public-site
+git add -A && git commit -m "update dashboard" && git push
+```
 
 | 主机记录 | 类型 | 记录值 | 说明 |
 |----------|------|--------|------|
@@ -40,16 +78,9 @@
 
 ## 更新看板数据
 
-```bash
-cd "/Users/wangyongqiang/Desktop/Ai 助手"
-python3 build_public_site.py
-cd public-site
-git add -A && git commit -m "update dashboard" && git push
-```
+见上方「直抓同步」章节。`build_public_site.py` 仅生成占位页，真实数据请用 `sync_public_site.py`。
 
-推送后 GitHub Pages 自动重新部署（约 1~3 分钟）。
-
-## 启用 HTTPS
+## DNS 记录（腾讯云 DNSPod）
 
 DNS 全球生效后，在 GitHub 仓库 Settings → Pages → 勾选 **Enforce HTTPS**，或：
 
