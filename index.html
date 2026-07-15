@@ -26,7 +26,7 @@ dialog{border:0;border-radius:18px;width:min(920px,calc(100vw - 32px));max-heigh
 <body>
 <header class="topbar"><div class="topbar-inner"><div class="brand">📊 wangyongqiang.top</div><nav class="nav"><a class="active" href="./">考核预警</a><a href="todo.html">Todo 达成</a><a href="dashboard.html">综合看板</a><a href="data/warning.json">数据 API</a></nav></div></header>
 <main class="wrap">
-  <section class="hero"><div><h1>新商考核预警</h1><div class="subtitle" id="meta">自动同步：2026-07-15 12:28</div></div><a class="source" href="http://47.112.178.78:8100/#/de-link/EAM2AO9a" target="_blank" rel="noopener">查看源看板 ↗</a></section>
+  <section class="hero"><div><h1>新商考核预警</h1><div class="subtitle" id="meta">自动同步：2026-07-15 20:59</div></div><a class="source" href="http://47.112.178.78:8100/#/de-link/EAM2AO9a" target="_blank" rel="noopener">查看源看板 ↗</a></section>
   <section class="kpis">
     <div class="kpi"><div class="label">覆盖城市</div><div class="value" id="total">—</div><div class="hint" id="regionHint">— 个区域</div></div>
     <div class="kpi"><div class="label">综合高风险</div><div class="value" style="color:var(--red)" id="highRisk">—</div><div class="hint">排名 0%–10%</div></div>
@@ -57,7 +57,9 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const sev=v=>{v=String(v??"");if(!v||v.includes("不预警")||v.includes("暂不预警"))return 0;if(v.includes("0%-10%"))return 4;if(v.includes("10%-30%"))return 3;if(v.includes("30%-50%"))return 2;if(v.includes("50%-70%"))return 1;return 0};
 const badge=v=>`<span class="badge sev-${sev(v)}">${esc(v||"—")}</span>`;
 function summarize(rows){
-  const regions=[...new Set(rows.map(r=>r["区域"]).filter(Boolean))].sort();
+  const regions=[...new Set(rows.map(r=>r["区域"]).filter(Boolean))];
+  const order=DATA.region_order||[];
+  regions.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return(ia<0?999:ia)-(ib<0?999:ib)||a.localeCompare(b,"zh-CN")});
   const levels=[...new Set(rows.map(r=>r["城市级别"]).filter(Boolean))].sort();
   const moduleSummary=moduleFields.map(field=>{
     const values=rows.map(r=>r[field]);
@@ -106,7 +108,7 @@ function render(){
 }
 function showDetail(r){
   $("detailTitle").textContent=`${r["城市名"]||"城市"} · 指标明细`;
-  $("detailSub").textContent=`${r["区域"]||""} · ${r["城市级别"]||""} · 数据日期 ${r["数据日期"]||$("date").value}`;
+  $("detailSub").textContent=`${r["大区"]?r["大区"]+" · ":""}${r["区域"]||""} · ${r["城市级别"]||""} · 数据日期 ${r["数据日期"]||$("date").value}`;
   const preferred=["综合排名",...moduleFields],rest=(DATA.fields||[]).filter(f=>!["数据日期","城市名","区域","城市级别",...preferred].includes(f));
   $("detailGrid").innerHTML=[...preferred,...rest].filter((v,i,a)=>a.indexOf(v)===i).map(f=>`<div class="detail-item"><div class="detail-label">${esc(f)}</div><div class="detail-value">${f.includes("预警")||f==="综合排名"?badge(r[f]):esc(r[f]??"—")}</div></div>`).join("");
   $("detail").showModal();
