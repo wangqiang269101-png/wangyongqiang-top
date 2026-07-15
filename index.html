@@ -26,12 +26,12 @@ dialog{border:0;border-radius:18px;width:min(920px,calc(100vw - 32px));max-heigh
 <body>
 <header class="topbar"><div class="topbar-inner"><div class="brand">📊 wangyongqiang.top</div><nav class="nav"><a class="active" href="./">考核预警</a><a href="todo.html">Todo 达成</a><a href="dashboard.html">综合看板</a><a href="data/warning.json">数据 API</a></nav></div></header>
 <main class="wrap">
-  <section class="hero"><div><h1>新商考核预警</h1><div class="subtitle" id="meta">自动同步：2026-07-15 11:49</div></div><a class="source" href="http://47.112.178.78:8100/#/de-link/EAM2AO9a" target="_blank" rel="noopener">查看源看板 ↗</a></section>
+  <section class="hero"><div><h1>新商考核预警</h1><div class="subtitle" id="meta">自动同步：2026-07-15 12:28</div></div><a class="source" href="http://47.112.178.78:8100/#/de-link/EAM2AO9a" target="_blank" rel="noopener">查看源看板 ↗</a></section>
   <section class="kpis">
     <div class="kpi"><div class="label">覆盖城市</div><div class="value" id="total">—</div><div class="hint" id="regionHint">— 个区域</div></div>
-    <div class="kpi"><div class="label">综合高风险</div><div class="value" style="color:var(--red)" id="highRisk">—</div><div class="hint">排名 90%–100%</div></div>
-    <div class="kpi"><div class="label">综合风险</div><div class="value" style="color:var(--orange)" id="risk">—</div><div class="hint">排名 70%–90%</div></div>
-    <div class="kpi"><div class="label">重点关注</div><div class="value" style="color:var(--amber)" id="watch">—</div><div class="hint">排名 50%–70%</div></div>
+    <div class="kpi"><div class="label">综合高风险</div><div class="value" style="color:var(--red)" id="highRisk">—</div><div class="hint">排名 0%–10%</div></div>
+    <div class="kpi"><div class="label">综合风险</div><div class="value" style="color:var(--orange)" id="risk">—</div><div class="hint">排名 10%–30%</div></div>
+    <div class="kpi"><div class="label">重点关注</div><div class="value" style="color:var(--amber)" id="watch">—</div><div class="hint">排名 30%–50%</div></div>
     <div class="kpi"><div class="label">历史批次</div><div class="value" id="batchCount">—</div><div class="hint" id="sourceHint">源数据 — 行</div></div>
   </section>
   <section class="modules" id="modules"></section>
@@ -41,12 +41,12 @@ dialog{border:0;border-radius:18px;width:min(920px,calc(100vw - 32px));max-heigh
       <input id="search" placeholder="搜索城市或区域…">
       <select id="region"><option value="">全部区域</option></select>
       <select id="level"><option value="">全部城市级别</option></select>
-      <select id="severity"><option value="">全部风险等级</option><option value="4">高风险 90%–100%</option><option value="3">风险 70%–90%</option><option value="2">关注 50%–70%</option><option value="1">一般 30%–50%</option><option value="0">低风险/暂不预警</option></select>
+      <select id="severity"><option value="">全部风险等级</option><option value="4">高风险 0%–10%</option><option value="3">风险 10%–30%</option><option value="2">关注 30%–50%</option><option value="1">一般 50%–70%</option><option value="0">低风险 70%以上 / 不预警</option></select>
     </div>
     <div class="table-wrap"><table><thead><tr><th>城市</th><th>区域</th><th>级别</th><th>综合排名</th><th>外卖</th><th>团购</th><th>履约</th><th>零售</th><th>商业增值</th><th>用户体验</th></tr></thead><tbody id="rows"><tr><td class="loading" colspan="10">加载数据中…</td></tr></tbody></table></div>
     <div class="count" id="count"></div>
   </section>
-  <div class="note">数据来自 DataEase 公开看板自动同步；点击城市可查看全部指标明细。</div>
+  <div class="note">排名越低风险越高：0%–10% 为高风险，10%–30% 为风险；70% 以上为相对低风险。点击城市可查看全部指标。</div>
 </main>
 <dialog id="detail"><div class="modal-head"><div><div class="modal-title" id="detailTitle"></div><div class="subtitle" id="detailSub"></div></div><button class="close" onclick="detail.close()">×</button></div><div class="detail" id="detailGrid"></div></dialog>
 <script>
@@ -54,7 +54,7 @@ const moduleFields=["外卖模块预警", "团购模块预警", "履约模块预
 let DATA=null,activeModule="",filtered=[],currentRows=[];
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const sev=v=>{v=String(v??"");if(v.includes("90%-100%"))return 4;if(v.includes("70%-90%"))return 3;if(v.includes("50%-70%"))return 2;if(v.includes("30%-50%"))return 1;return 0};
+const sev=v=>{v=String(v??"");if(!v||v.includes("不预警")||v.includes("暂不预警"))return 0;if(v.includes("0%-10%"))return 4;if(v.includes("10%-30%"))return 3;if(v.includes("30%-50%"))return 2;if(v.includes("50%-70%"))return 1;return 0};
 const badge=v=>`<span class="badge sev-${sev(v)}">${esc(v||"—")}</span>`;
 function summarize(rows){
   const regions=[...new Set(rows.map(r=>r["区域"]).filter(Boolean))].sort();
