@@ -1,0 +1,30 @@
+:root{--nav:#101828;--ink:#172033;--muted:#667085;--line:#e7ebf2;--bg:#f5f7fb;--blue:#2563eb;--red:#dc2626;--orange:#ea580c;--amber:#d97706;--sidebar-w:200px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+a{color:inherit;text-decoration:none}
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--nav);color:#fff;flex-shrink:0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;z-index:40;box-shadow:2px 0 16px #10182820}
+.sidebar-brand{padding:20px 16px 18px;font-size:16px;font-weight:750;border-bottom:1px solid #ffffff12;line-height:1.3}
+.sidebar-nav{padding:12px 8px;display:flex;flex-direction:column;gap:4px;flex:1}
+.sidebar-nav a{display:block;color:#cbd5e1;padding:10px 14px;border-radius:8px;font-size:14px;transition:background .15s,color .15s}
+.sidebar-nav a:hover{background:#ffffff16;color:#fff}
+.sidebar-nav a.active{background:#2563eb;color:#fff;font-weight:650}
+.sidebar-foot{padding:12px 16px;border-top:1px solid #ffffff12;font-size:11px;color:#667085}
+.app-main{flex:1;min-width:0;overflow:auto}
+.page-wrap{max-width:1480px;margin:0 auto;padding:28px 24px 50px}
+.page-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.page-hero h1{font-size:29px;margin:0 0 5px}
+.subtitle{color:var(--muted)}
+.placeholder-box{background:#fff;border:1px dashed #d0d5dd;border-radius:14px;padding:60px 24px;text-align:center;color:var(--muted)}
+.placeholder-box h2{font-size:18px;color:var(--ink);margin:0 0 8px}
+.placeholder-box p{margin:0;font-size:14px}
+@media(max-width:768px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative;flex-direction:row;align-items:center;flex-wrap:wrap;padding:0 8px}
+  .sidebar-brand{padding:12px 8px;border-bottom:0;border-right:1px solid #ffffff12}
+  .sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:8px;gap:4px}
+  .sidebar-nav a{padding:7px 11px;font-size:13px}
+  .sidebar-foot{display:none}
+  .page-wrap{padding:20px 14px 40px}
+  .page-hero h1{font-size:23px}
+}
