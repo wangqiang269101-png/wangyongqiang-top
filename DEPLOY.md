@@ -4,11 +4,15 @@
 
 | 地址 | 状态 |
 |------|------|
-| **http://wangyongqiang.top** | ✅ 推荐访问（已上线，Clash 已设 DIRECT） |
+| **http://wangyongqiang.top** | ✅ 首页：DataEase 新商考核预警（自动同步） |
+| http://wangyongqiang.top/data/warning.json | 考核预警 JSON API |
 | https://wangyongqiang.top | ⏳ 待 GitHub 签发证书（DNS 生效后约 10~60 分钟） |
 | http://wangyongqiang.top/todo.html | Todo 达成看板 |
 | http://wangyongqiang.top/dashboard.html | 综合数据看板 |
 | http://wangyongqiang.top/data/todo.json | 静态 JSON 数据 |
+| http://wangyongqiang.top/star-warning.html | 星级预警全屏投屏（chuxin/Metabase iframe） |
+| http://wangyongqiang.top/star-warning-mirror.html | 星级预警数据镜像表 |
+| http://wangyongqiang.top/data/star-warning.json | 星级预警 JSON API |
 
 > **注意**：浏览器若自动跳转 HTTPS 会报证书错误，请手动输入 `http://` 前缀。
 
@@ -26,7 +30,9 @@
 
 - 源码目录：`/Users/wangyongqiang/Desktop/Ai 助手/public-site/`
 - 占位构建：`build_public_site.py`（仅模板/空数据）
-- 直抓同步：`scripts/sync_public_site.py`（抓取 → 转换 → 推送）
+- 直抓同步：`scripts/sync_public_site.py`（Todo 抓取 → 转换 → 推送）
+- DataEase 同步：`scripts/sync_dataease_dashboard.py`（考核预警看板 → 首页）
+- chuxin 星级预警：`scripts/sync_chuxin_star_warning.py`（Metabase 公开卡 → 投屏/镜像，每 3 分钟）
 - 配置文件：`scripts/public_site_config.json`
 - GitHub 仓库：https://github.com/wangqiang269101-png/wangyongqiang-top
 
@@ -53,6 +59,24 @@ python3 scripts/sync_public_site.py --fetch-mode file --deploy
 `fetch.mode` 可选：`stub`（占位）、`file`（本地 JSON）、`api`（HTTP URL）、`chrome`（浏览器会话）。
 
 日志：`分析输出/sync.log`
+
+## DataEase 考核预警同步（首页）
+
+源看板：http://47.112.178.78:8100/#/de-link/EAM2AO9a
+
+```bash
+cd "/Users/wangyongqiang/Desktop/Ai 助手"
+
+# 抓取 + 生成首页 + warning.json（不推送）
+python3 scripts/sync_dataease_dashboard.py --force
+
+# 抓取 + 推送上线
+python3 scripts/sync_dataease_dashboard.py --deploy
+```
+
+- 首页 `index.html` 从 `data/warning.json` 动态加载，支持 **16 个历史日期** 切换
+- 定时任务 LaunchAgent 每次运行时会先同步 DataEase，再同步 Todo（08:00）
+- 日志：`~/Library/Application Support/wangyongqiang-top/logs/dataease-sync.log`
 
 ## 占位构建（仅模板）
 
