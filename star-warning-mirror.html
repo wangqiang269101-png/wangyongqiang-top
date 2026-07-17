@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>星级预警数据镜像 · wangyongqiang.top</title>
+<style>
+:root{--nav:#101828;--ink:#172033;--muted:#667085;--line:#e7ebf2;--bg:#f5f7fb;--red:#dc2626;--orange:#ea580c;--amber:#d97706;--blue:#2563eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+a{color:inherit}.topbar{background:var(--nav);color:#fff}.topbar-inner{max-width:1480px;margin:auto;display:flex;justify-content:space-between;gap:16px;padding:14px 24px;align-items:center}
+.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{color:#cbd5e1;text-decoration:none;padding:7px 11px;border-radius:8px}.nav a:hover,.nav a.active{background:#ffffff16;color:#fff}
+.wrap{max-width:1480px;margin:auto;padding:24px}.hero{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.kpi .label{color:var(--muted);font-size:12px}.kpi .value{font-size:26px;font-weight:780;margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;padding:14px;border-bottom:1px solid var(--line)}
+input,select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px 11px}
+.table-wrap{overflow:auto;max-height:70vh}table{border-collapse:separate;border-spacing:0;width:100%;min-width:960px}th{position:sticky;top:0;background:#f9fafb;font-size:12px;color:#475467}th,td{padding:10px 12px;border-bottom:1px solid #eef1f5;white-space:nowrap}
+.badge{display:inline-flex;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:650}.sev-4{background:#fef2f2;color:var(--red)}.sev-3{background:#fff7ed;color:var(--orange)}.sev-2{background:#fffbeb;color:var(--amber)}.sev-1{background:#eff6ff;color:var(--blue)}.sev-0{background:#f2f4f7;color:#667085}
+.count{padding:10px 14px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+@media(max-width:800px){.kpis,.controls{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><div>📊 wangyongqiang.top</div><nav class="nav"><a href="./">考核预警</a><a href="star-warning.html">星级投屏</a><a class="active" href="star-warning-mirror.html">数据镜像</a><a href="data/star-warning.json">JSON</a></nav></div></header>
+<main class="wrap">
+  <section class="hero"><div><h1 style="margin:0 0 4px;font-size:26px">星级预警数据镜像</h1><div style="color:var(--muted)">同步自 chuxin → Metabase 公开卡「新商预警」· 2026-07-18 00:37</div></div><a href="http://47.112.178.78:3000/public/dashboard/5d509c91-583b-4229-89ee-51721035ae71?tab=97-%E6%96%B0%E5%95%86%E9%A2%84%E8%AD%A6" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">打开源看板 ↗</a></section>
+  <section class="kpis">
+    <div class="kpi"><div class="label">覆盖城市</div><div class="value" id="total">—</div></div>
+    <div class="kpi"><div class="label">综合高风险</div><div class="value" style="color:var(--red)" id="high">—</div></div>
+    <div class="kpi"><div class="label">综合风险</div><div class="value" style="color:var(--orange)" id="risk">—</div></div>
+    <div class="kpi"><div class="label">重点关注</div><div class="value" style="color:var(--amber)" id="watch">—</div></div>
+  </section>
+  <section class="panel">
+    <div class="controls">
+      <input id="q" placeholder="搜索城市或区域…">
+      <select id="region"><option value="">全部区域</option></select>
+      <select id="sev"><option value="">全部综合风险</option><option value="4">高风险 0%–10%</option><option value="3">风险 10%–30%</option><option value="2">关注 30%–50%</option><option value="1">一般 50%–70%</option><option value="0">低/不预警</option></select>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>城市</th><th>区域</th><th>级别</th><th>综合排名</th><th>外卖</th><th>团购</th><th>履约</th><th>零售</th><th>商业增值</th><th>用户体验</th></tr></thead><tbody id="rows"><tr><td colspan="10" style="padding:40px;text-align:center;color:#98a2b3">加载中…</td></tr></tbody></table></div>
+    <div class="count" id="count"></div>
+  </section>
+</main>
+<script>
+const mods=["外卖模块预警", "团购模块预警", "履约模块预警", "零售模块预警", "商业增值模块预警", "用户体验模块预警"];
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sev=v=>{v=String(v??"");if(!v||v.includes("不预警"))return 0;if(v.includes("0%-10%"))return 4;if(v.includes("10%-30%"))return 3;if(v.includes("30%-50%"))return 2;if(v.includes("50%-70%"))return 1;return 0};
+const badge=v=>`<span class="badge sev-${sev(v)}">${esc(v||"—")}</span>`;
+let rows=[];
+fetch("./data/star-warning.json?_="+Date.now()).then(r=>r.json()).then(d=>{
+  rows=d.rows||[];
+  $("total").textContent=d.total??rows.length;
+  $("high").textContent=d.high_risk??"—";
+  $("risk").textContent=d.risk??"—";
+  $("watch").textContent=d.watch??"—";
+  const regions=[...new Set(rows.map(r=>r["区域"]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"zh-CN"));
+  $("region").innerHTML='<option value="">全部区域</option>'+regions.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join("");
+  render();
+}).catch(e=>{$("rows").innerHTML=`<tr><td colspan="10" style="padding:40px;text-align:center">加载失败：${esc(e.message)}</td></tr>`});
+function render(){
+  const q=$("q").value.trim().toLowerCase(), region=$("region").value, s=$("sev").value;
+  const filtered=rows.filter(r=>{
+    const hit=!q||`${r["城市名"]||""} ${r["区域"]||""}`.toLowerCase().includes(q);
+    return hit&&(!region||r["区域"]===region)&&(s===""||sev(r["综合排名"])===Number(s));
+  }).sort((a,b)=>sev(b["综合排名"])-sev(a["综合排名"])||String(a["城市名"]||"").localeCompare(String(b["城市名"]||""),"zh-CN"));
+  $("rows").innerHTML=filtered.length?filtered.map(r=>`<tr><td><b>${esc(r["城市名"])}</b></td><td>${esc(r["区域"])}</td><td>${esc(r["城市级别"]||"—")}</td><td>${badge(r["综合排名"])}</td>${mods.map(m=>`<td>${badge(r[m])}</td>`).join("")}</tr>`).join(""):`<tr><td colspan="10" style="padding:40px;text-align:center;color:#98a2b3">无匹配数据</td></tr>`;
+  $("count").textContent=`显示 ${filtered.length} / ${rows.length} · 数据日期 ${esc((rows[0]||{})["数据日期"]||"—")}`;
+}
+["q","region","sev"].forEach(id=>$(id).addEventListener(id==="q"?"input":"change",render));
+</script>
+</body>
+</html>

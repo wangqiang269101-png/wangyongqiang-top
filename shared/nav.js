@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   var items = [
     { label: "新商评", href: "./", page: "xsh" },
+    { label: "星级投屏", href: "star-warning.html", page: "star" },
+    { label: "预警镜像", href: "star-warning-mirror.html", page: "star-mirror" },
     { label: "团购", href: "tuangou.html", page: "tuangou" },
     { label: "广告达成", href: "ad.html", page: "ad" },
     { label: "基本功", href: "basic.html", page: "basic" },
