@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   var items = [
     { label: "新商评", href: "./", page: "xsh" },
-    { label: "星级投屏", href: "star-warning.html", page: "star" },
-    { label: "预警镜像", href: "star-warning-mirror.html", page: "star-mirror" },
+    { label: "商评预警", href: "star-warning-mirror.html", page: "star-mirror", sub: true },
     { label: "团购", href: "tuangou.html", page: "tuangou" },
     { label: "广告达成", href: "ad.html", page: "ad" },
     { label: "基本功", href: "basic.html", page: "basic" },
@@ -11,7 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var current = document.body.getAttribute("data-page") || "xsh";
   var nav = items
     .map(function (item) {
-      var cls = item.page === current ? ' class="active"' : "";
+      var classes = [];
+      if (item.sub) classes.push("sub");
+      if (item.page === current) classes.push("active");
+      var cls = classes.length ? ' class="' + classes.join(" ") + '"' : "";
       return '<a href="' + item.href + '"' + cls + ">" + item.label + "</a>";
     })
     .join("");

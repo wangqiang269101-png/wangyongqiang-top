@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>星级预警数据镜像 · wangyongqiang.top</title>
+<title>商评预警 · wangyongqiang.top</title>
+<link rel="stylesheet" href="shared/site.css">
+<script src="shared/nav.js" defer></script>
 <style>
-:root{--nav:#101828;--ink:#172033;--muted:#667085;--line:#e7ebf2;--bg:#f5f7fb;--red:#dc2626;--orange:#ea580c;--amber:#d97706;--blue:#2563eb}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-a{color:inherit}.topbar{background:var(--nav);color:#fff}.topbar-inner{max-width:1480px;margin:auto;display:flex;justify-content:space-between;gap:16px;padding:14px 24px;align-items:center}
-.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{color:#cbd5e1;text-decoration:none;padding:7px 11px;border-radius:8px}.nav a:hover,.nav a.active{background:#ffffff16;color:#fff}
-.wrap{max-width:1480px;margin:auto;padding:24px}.hero{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.hero{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.kpi .label{color:var(--muted);font-size:12px}.kpi .value{font-size:26px;font-weight:780;margin-top:4px}
 .panel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;padding:14px;border-bottom:1px solid var(--line)}
 input,select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px 11px}
@@ -19,10 +17,9 @@ input,select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px 1
 @media(max-width:800px){.kpis,.controls{grid-template-columns:1fr 1fr}}
 </style>
 </head>
-<body>
-<header class="topbar"><div class="topbar-inner"><div>📊 wangyongqiang.top</div><nav class="nav"><a href="./">考核预警</a><a href="star-warning.html">星级投屏</a><a class="active" href="star-warning-mirror.html">数据镜像</a><a href="data/star-warning.json">JSON</a></nav></div></header>
-<main class="wrap">
-  <section class="hero"><div><h1 style="margin:0 0 4px;font-size:26px">星级预警数据镜像</h1><div style="color:var(--muted)">同步自 chuxin → Metabase 公开卡「新商预警」· 2026-07-18 00:46</div></div><a href="http://47.112.178.78:3000/public/dashboard/5d509c91-583b-4229-89ee-51721035ae71?tab=97-%E6%96%B0%E5%95%86%E9%A2%84%E8%AD%A6" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">打开源看板 ↗</a></section>
+<body data-page="star-mirror">
+<main class="page-wrap">
+  <section class="hero"><div><h1 style="margin:0 0 4px;font-size:26px">商评预警</h1><div style="color:var(--muted)">同步自 chuxin → Metabase 公开卡「新商预警」· 2026-07-18 00:46</div></div><a href="http://47.112.178.78:3000/public/dashboard/5d509c91-583b-4229-89ee-51721035ae71?tab=97-%E6%96%B0%E5%95%86%E9%A2%84%E8%AD%A6" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">打开源看板 ↗</a></section>
   <section class="kpis">
     <div class="kpi"><div class="label">覆盖城市</div><div class="value" id="total">—</div></div>
     <div class="kpi"><div class="label">综合高风险</div><div class="value" style="color:var(--red)" id="high">—</div></div>
