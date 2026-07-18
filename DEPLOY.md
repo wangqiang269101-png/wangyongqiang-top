@@ -4,17 +4,32 @@
 
 | 地址 | 状态 |
 |------|------|
-| **http://wangyongqiang.top** | ✅ 首页：DataEase 新商考核预警（自动同步） |
+| **http://wangyongqiang.top** | ✅ 首页「新商评」考核预警（**已自动同步，无需手动**） |
 | http://wangyongqiang.top/data/warning.json | 考核预警 JSON API |
 | https://wangyongqiang.top | ⏳ 待 GitHub 签发证书（DNS 生效后约 10~60 分钟） |
 | http://wangyongqiang.top/todo.html | Todo 达成看板 |
 | http://wangyongqiang.top/dashboard.html | 综合数据看板 |
 | http://wangyongqiang.top/data/todo.json | 静态 JSON 数据 |
-| http://wangyongqiang.top/star-warning.html | 星级预警全屏投屏（chuxin/Metabase iframe） |
-| http://wangyongqiang.top/star-warning-mirror.html | 星级预警数据镜像表 |
+| http://wangyongqiang.top/star-warning.html | 星级预警全屏投屏（**已自动同步，无需手动**） |
+| http://wangyongqiang.top/star-warning-mirror.html | 星级预警数据镜像表（**已自动同步，无需手动**） |
 | http://wangyongqiang.top/data/star-warning.json | 星级预警 JSON API |
 
 > **注意**：浏览器若自动跳转 HTTPS 会报证书错误，请手动输入 `http://` 前缀。
+
+## 自动同步（已启用，无需手动）
+
+LaunchAgent `com.wangyongqiang.chuxin-star-warning` **已安装并启用**：每 **3 分钟**（180s）轮询源站 `http://www.chuxin.city/admin/b7v8t424ohb`，**hash 变更才 push**。
+
+| 覆盖页面 | 脚本 |
+|----------|------|
+| 首页「新商评」`index.html` + `data/warning.json` | `sync_dataease_dashboard.py --share-url chuxin` |
+| `star-warning.html` 投屏 + `star-warning-mirror.html` 镜像 + JSON | `sync_chuxin_star_warning.py` |
+
+- 入口：`~/Library/Application Support/wangyongqiang-top/run_chuxin_star_sync.py`（ASCII 路径，规避 Desktop 中文 TCC）
+- 安装：`scripts/install_chuxin_star_warning_launch_agent.sh`
+- 日志：`~/Library/Application Support/wangyongqiang-top/logs/chuxin-star-*.log`
+
+日常无需再手动同步；仅排查或强制刷新时用下方命令。
 
 备用 GitHub 地址：https://wangqiang269101-png.github.io/wangyongqiang-top/
 
