@@ -5,7 +5,7 @@
   "dashboard_uuid": "5d509c91-583b-4229-89ee-51721035ae71",
   "card_id": 189,
   "dashcard_id": 167,
-  "synced_at": "2026-07-28 16:55",
+  "synced_at": "2026-07-31 10:56",
   "data_date": "2026-07-27",
   "available_dates": [
     "2026-07-27",
@@ -80,7 +80,7 @@
   "high_risk": 4,
   "risk": 4,
   "watch": 10,
-  "data_hash": "cc945c737f6c838fd89ee02f68154d81e0a93de131a459947b0d3b3449dda076",
+  "data_hash": "ee6a3ec780c4a2be74d0dec8781b5aebd5be56528847626d8a8e58899d68871d",
   "rows": [
     {
       "数据日期": "2026-07-27",
